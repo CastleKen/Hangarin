@@ -15,50 +15,50 @@ class Priority(BaseModel):
         return self.priority_name
     
 class Category(BaseModel):
-    name = models.CharField(max_length=150)
+    category_name = models.CharField(max_length=150)
 
     def __str__(self):
-        return self.name
+        return self.category_name
     
 class Task(BaseModel):
-    title = models.CharField(max_length=150)
-    description = models.CharField(max_length=500)
-    deadline = models.CharField(max_length=120)
-    status = models.CharField(
+    task_title = models.CharField(max_length=150)
+    task_description = models.CharField(max_length=500)
+    task_deadline = models.DateField(null=True, blank=True)
+    task_status = models.CharField(
         max_length=50,
         choices=[
             ("Pending", "Pending"),
             ("In Progress ", "In Progress"),
             ("Completed", "Completed"),
         ],
-        default="pending"
+        default="Pending"
     )
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    priority = models.ForeignKey(Priority, on_delete=models.CASCADE)
+    task_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    task_priority = models.ForeignKey(Priority, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return self.task_title
 
 
 class Note(BaseModel):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    content = models.CharField(max_length=150)
+    note_task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    note_content = models.CharField(max_length=150)
 
     def __str__(self):
-        return self.task
+        return self.note_content
 
 class SubTask(BaseModel):
-    parent_task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    title = models.CharField(max_length=150)
-    status = models.CharField(
+    sub_parent_task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    sub_title = models.CharField(max_length=150)
+    sub_status = models.CharField(
         max_length=50,
         choices=[
             ("Pending", "Pending"),
             ("In Progress ", "In Progress"),
             ("Completed", "Completed"),
         ],
-        default="pending"
+        default="Pending"
     )
 
     def __str__(self):
-        return self.parent_task
+        return self.sub_title
